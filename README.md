@@ -1,4 +1,5 @@
-jdks
-====
+jdksavbapi
+==========
 
-Starting point for C/C++ projects
+Fundamental AVB API functions
+
