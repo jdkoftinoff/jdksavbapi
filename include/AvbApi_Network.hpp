@@ -36,15 +36,26 @@ namespace AvbApi2014
 class Network : public std::enable_shared_from_this<Network>
 {
   public:
-    virtual void doADPRequest( shared_ptr<ADPRequest>, std::function<void()> ) = 0;
+    virtual void doADPRequest( shared_ptr<ADPRequest> & ) = 0;
 
-    virtual void doAECPAARequest( shared_ptr<AECPAARequest>, std::function<void(shared_ptr<AECPAAResponse> const &)> ) = 0;
+    virtual void doAECPAARequest( shared_ptr<AECPAARequest> &request,
+                                  std::function<void(shared_ptr<AECPAAResponse> const &)> successCallback,
+                                  std::function<void(string const &)> failureCallback ) = 0;
 
-    virtual void doAECPAEMRequest( shared_ptr<AECPAEMRequest>, std::function<void(shared_ptr<AECPAEMResponse> const &)> ) = 0;
+    virtual void doACMPRequest( shared_ptr<ACMPRequest> &request,
+                                std::function<void(shared_ptr<ACMPResponse> const &)> successCallback,
+                                std::function<void(string const &)> failureCallback ) = 0;
+
+    virtual void doAECPAEMRequest( shared_ptr<AECPAEMRequest> &request,
+                                   std::function<void(shared_ptr<AECPAEMResponse> const &)> successCallback,
+                                   std::function<void(string const &)> failureCallback ) = 0;
 
     FunctionList<void(NetworkAddress const &, bool)> m_LinkStatusChangedEvent;
+
     FunctionList<void(shared_ptr<ADPResponse> const &)> m_ADPResponseEvent;
+
     FunctionList<void(shared_ptr<ACMPUnsolicitedResponse> const &)> m_ACMPUnsolicitedResponseEvent;
+
     FunctionList<void(shared_ptr<AECPAEMUnsolicitedResponse> const &)> m_AECPAEMUnsolicitedResponseEvent;
 };
 }

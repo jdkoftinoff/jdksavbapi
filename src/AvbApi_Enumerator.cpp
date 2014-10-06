@@ -27,5 +27,86 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "AvbApi_world.hpp"
 
 #include "AvbApi_Enumerator.hpp"
+#include "AvbApi_AEMCommandTypes.hpp"
+#include "AvbApi_AEMDescriptorTypes.hpp"
+#include "AvbApi_EntityModel.hpp"
 
-const char *avbapi_enumerator_file = __FILE__;
+namespace AvbApi2014
+{
+
+void Enumerator::startEnumeration()
+{
+    m_entityContext->readDescriptor(
+        0,
+        AEMDescriptorType::ENTITY,
+        0,
+        [&]( shared_ptr<AECPAEMResponse> const &response, shared_ptr<AEMDescriptorStorage> &descriptorData )
+        {
+            (void)response;
+            // TODO: parseEntityDescriptor( response );
+            // TODO: fill in entity info into m_entityModel
+            // TODO: iterate through all configurations and read all descriptors in each
+            m_entityModel->m_descriptors[DescriptorIdentifier( 0, AEMDescriptorType::ENTITY, 0 )] = descriptorData;
+            AEMConfigurationIndexType numConfigurations = 1; // TODO: m_entityModel->getNumConfigurations();
+            for ( AEMConfigurationIndexType config = 0; config < numConfigurations; ++config )
+            {
+                enumerateConfiguration( config );
+            }
+            m_enumerationCompletedCallback( m_entityContext->m_targetEntityId, m_entityModel );
+        },
+        [&]( string const &info )
+        {
+            m_enumerationFailedCallback( m_entityContext->m_targetEntityId, m_entityModel, info );
+        } );
+}
+
+void Enumerator::enumerateConfiguration( AEMConfigurationIndexType configuration )
+{
+    m_entityContext->readDescriptor(
+        configuration,
+        AEMDescriptorType::CONFIGURATION,
+        0,
+        [&]( shared_ptr<AECPAEMResponse> const &response, shared_ptr<AEMDescriptorStorage> &descriptorData )
+        {
+
+            // TODO: parse Configuration descriptor
+            m_entityModel->m_descriptors[DescriptorIdentifier( 0, AEMDescriptorType::CONFIGURATION, 0 )] = descriptorData;
+
+            // read all descriptors in this configuration for all descriptor types
+            for ( uint16_t type = 0; type < AEMDescriptorType::NUM_DESCRIPTOR_TYPES; ++type )
+            {
+                enumerateAllDescriptorsOfType( configuration, AEMDescriptorType( type ) );
+            }
+        },
+        [&]( string const &info )
+        {
+            m_enumerationFailedCallback( m_entityContext->m_targetEntityId, m_entityModel, info );
+        } );
+}
+
+void Enumerator::enumerateAllDescriptorsOfType( AEMConfigurationIndexType configuration, AEMDescriptorType type )
+{
+    bool finished = false;
+    for ( AEMDescriptorIndex i = 0; i < 0xffff; ++i )
+    {
+        m_entityContext->readDescriptor(
+            configuration,
+            type,
+            0,
+            [&]( shared_ptr<AECPAEMResponse> const &response, shared_ptr<AEMDescriptorStorage> &descriptorData )
+            {
+                // TODO: if(response->status != SUCCESS) { finished=true; } else {...}
+                m_entityModel->m_descriptors[DescriptorIdentifier( configuration, type, i )] = descriptorData;
+
+            },
+            [&]( string const &info )
+            {
+                m_enumerationFailedCallback( m_entityContext->m_targetEntityId, m_entityModel, info );
+            } );
+        if ( finished )
+        {
+            break;
+        }
+    }
+}
+}

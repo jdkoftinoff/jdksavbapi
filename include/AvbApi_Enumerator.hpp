@@ -28,8 +28,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "AvbApi_world.hpp"
 #include "AvbApi_Factory.hpp"
+#include "AvbApi_Network.hpp"
 #include "AvbApi_Request.hpp"
 #include "AvbApi_Response.hpp"
+#include "AvbApi_AEMEntityCommandContext.hpp"
 
 namespace AvbApi2014
 {
@@ -37,14 +39,27 @@ namespace AvbApi2014
 class Enumerator : public std::enable_shared_from_this<Enumerator>
 {
   public:
-    Enumerator( Factory &factory, EntityId targetEntityId, function<void(EntityId, shared_ptr<EntityModel> &)> callback )
-        : m_factory( factory ), m_targetEntityId( targetEntityId ), m_callback( callback )
+    Enumerator( shared_ptr<AEMEntityCommandContext> &entityContext,
+                shared_ptr<EntityModel> &entityModel,
+                function<void(EntityId, shared_ptr<EntityModel> &)> enumerationCompletedCallback,
+                function<void(EntityId, shared_ptr<EntityModel> &, string const &)> enumerationFailedCallback )
+        : m_entityContext( entityContext )
+        , m_entityModel( entityModel )
+        , m_enumerationCompletedCallback( enumerationCompletedCallback )
+        , m_enumerationFailedCallback( enumerationFailedCallback )
     {
     }
 
+    virtual void startEnumeration();
+
+    virtual void enumerateConfiguration( AEMConfigurationIndexType configuration );
+
+    virtual void enumerateAllDescriptorsOfType( AEMConfigurationIndexType configuration, AEMDescriptorType type );
+
   protected:
-    Factory &m_factory;
-    EntityId m_targetEntityId;
-    function<void(EntityId, shared_ptr<EntityModel> &)> m_callback;
+    shared_ptr<AEMEntityCommandContext> m_entityContext;
+    shared_ptr<EntityModel> m_entityModel;
+    function<void(EntityId, shared_ptr<EntityModel> &)> m_enumerationCompletedCallback;
+    function<void(EntityId, shared_ptr<EntityModel> &, string const &)> m_enumerationFailedCallback;
 };
 }

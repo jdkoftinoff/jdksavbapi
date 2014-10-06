@@ -37,7 +37,17 @@ namespace AvbApi2014
 class Entity : public std::enable_shared_from_this<Entity>
 {
   public:
-    Entity( Factory &factory, EntityId entityId, EntityModelId entityModelId, shared_ptr<EntityModel> &entityModel );
+    Entity( shared_ptr<Factory> &factory,
+            EntityId entityId,
+            EntityModelId entityModelId,
+            shared_ptr<EntityModel> &entityModel );
     virtual ~Entity() {}
+
+    shared_ptr<Factory> m_factory;
+    EntityId m_entityId;
+    EntityModelId m_entityModelId;
+    shared_ptr<EntityModel> m_entityModel;
+
+    uint16_t m_currentConfiguration;
 };
 }

@@ -27,11 +27,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "AvbApi_world.hpp"
+#include "AvbApi_AEMDescriptorTypes.hpp"
+#include "AvbApi_AEMCommandTypes.hpp"
 
 namespace AvbApi2014
 {
 class Factory;
 class Network;
+class AEMEntityCommandContext;
 class Entity;
 class EntityModel;
 class Enumerator;
@@ -57,6 +60,11 @@ class Factory : public std::enable_shared_from_this<Factory>
 
     virtual shared_ptr<Entity> createEntity( EntityId entityId, EntityModelId entityModelId, shared_ptr<EntityModel> & ) = 0;
 
+    virtual shared_ptr<AEMEntityCommandContext> createAEMEntityCommandContext( shared_ptr<Network> &network,
+                                                                               EntityId controllerEntityId,
+                                                                               NetworkAddress targetNetworkAddress,
+                                                                               EntityId targetEntityId ) = 0;
+
     virtual shared_ptr<Enumerator> createEnumerator( EntityId targetEntityId,
                                                      function<void(EntityId, shared_ptr<EntityModel> &)> callback ) = 0;
 
@@ -66,8 +74,8 @@ class Factory : public std::enable_shared_from_this<Factory>
                                                        EntityId controller_entity_id,
                                                        EntityId talker_entity_id,
                                                        EntityId listener_entity_id,
-                                                       DescriptorIndexType talker_unique_id,
-                                                       DescriptorIndexType listener_unique_id,
+                                                       AEMDescriptorIndex talker_unique_id,
+                                                       AEMDescriptorIndex listener_unique_id,
                                                        MACAddress stream_dest_mac,
                                                        uint16_t connection_count,
                                                        uint16_t sequence_id,
@@ -80,8 +88,8 @@ class Factory : public std::enable_shared_from_this<Factory>
                                                          EntityId controller_entity_id,
                                                          EntityId talker_entity_id,
                                                          EntityId listener_entity_id,
-                                                         DescriptorIndexType talker_unique_id,
-                                                         DescriptorIndexType listener_unique_id,
+                                                         AEMDescriptorIndex talker_unique_id,
+                                                         AEMDescriptorIndex listener_unique_id,
                                                          MACAddress stream_dest_mac,
                                                          uint16_t connection_count,
                                                          uint16_t sequence_id,
@@ -94,8 +102,8 @@ class Factory : public std::enable_shared_from_this<Factory>
                                                                                EntityId controller_entity_id,
                                                                                EntityId talker_entity_id,
                                                                                EntityId listener_entity_id,
-                                                                               DescriptorIndexType talker_unique_id,
-                                                                               DescriptorIndexType listener_unique_id,
+                                                                               AEMDescriptorIndex talker_unique_id,
+                                                                               AEMDescriptorIndex listener_unique_id,
                                                                                MACAddress stream_dest_mac,
                                                                                uint16_t connection_count,
                                                                                uint16_t sequence_id,
@@ -119,8 +127,8 @@ class Factory : public std::enable_shared_from_this<Factory>
                                                        uint32_t available_index,
                                                        uint64_t gptp_grandmaster_id,
                                                        uint8_t gptp_domain_number,
-                                                       DescriptorIndexType identify_control_index,
-                                                       DescriptorIndexType interface_index,
+                                                       AEMDescriptorIndex identify_control_index,
+                                                       AEMDescriptorIndex interface_index,
                                                        uint64_t association_id ) = 0;
 
     virtual shared_ptr<AECPAARequest> createAECPAARequest( NetworkAddress network_address,

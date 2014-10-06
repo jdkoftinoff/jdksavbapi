@@ -36,6 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cstdint>
 #include <utility>
 #include <tuple>
+#include <map>
 #include <sys/socket.h>
 
 namespace AvbApi2014
@@ -51,17 +52,83 @@ using std::make_shared;
 using std::function;
 using std::vector;
 using std::array;
+using std::map;
+using std::string;
 
-typedef std::uint64_t EntityId;
-typedef std::uint64_t EntityModelId;
-typedef std::uint64_t StreamId;
-typedef std::uint64_t MACAddress;
-typedef std::uint16_t CommandCode;
-typedef std::uint16_t ConfigurationIndexType;
-typedef std::uint16_t DescriptorType;
-typedef std::uint16_t DescriptorIndexType;
-typedef std::vector<uint8_t> DescriptorStorage;
-typedef std::tuple<ConfigurationIndexType, DescriptorType, DescriptorIndexType> DescriptorIdentifier;
+struct EntityId
+{
+    std::uint64_t value;
+
+    bool operator<( EntityId other ) const { return value < other.value; }
+
+    bool operator<=( EntityId other ) const { return value <= other.value; }
+
+    bool operator>( EntityId other ) const { return value > other.value; }
+
+    bool operator==( EntityId other ) const { return value == other.value; }
+
+    bool operator!=( EntityId other ) const { return value != other.value; }
+};
+
+struct EntityModelId
+{
+    std::uint64_t value;
+
+    bool operator<( EntityModelId other ) const { return value < other.value; }
+
+    bool operator<=( EntityModelId other ) const { return value <= other.value; }
+
+    bool operator>( EntityModelId other ) const { return value > other.value; }
+
+    bool operator==( EntityModelId other ) const { return value == other.value; }
+
+    bool operator!=( EntityModelId other ) const { return value != other.value; }
+};
+
+struct StreamId
+{
+    std::uint64_t value;
+
+    bool operator<( StreamId other ) const { return value < other.value; }
+
+    bool operator<=( StreamId other ) const { return value <= other.value; }
+
+    bool operator>( StreamId other ) const { return value > other.value; }
+
+    bool operator==( StreamId other ) const { return value == other.value; }
+
+    bool operator!=( StreamId other ) const { return value != other.value; }
+};
+
+struct MACAddress
+{
+    std::uint64_t value;
+
+    bool operator<( MACAddress other ) const { return value < other.value; }
+
+    bool operator<=( MACAddress other ) const { return value <= other.value; }
+
+    bool operator>( MACAddress other ) const { return value > other.value; }
+
+    bool operator==( MACAddress other ) const { return value == other.value; }
+
+    bool operator!=( MACAddress other ) const { return value != other.value; }
+};
+
+struct StreamFormat
+{
+    std::uint64_t value;
+
+    bool operator<( MACAddress other ) const { return value < other.value; }
+
+    bool operator<=( MACAddress other ) const { return value <= other.value; }
+
+    bool operator>( MACAddress other ) const { return value > other.value; }
+
+    bool operator==( MACAddress other ) const { return value == other.value; }
+
+    bool operator!=( MACAddress other ) const { return value != other.value; }
+};
 
 struct NetworkAddress
 {

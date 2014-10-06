@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 Copyright (c) 2014, Jeff Koftinoff
 All rights reserved.
@@ -27,22 +25,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "AvbApi_world.hpp"
-#include "AvbApi_Factory.hpp"
-#include "AvbApi_FunctionList.hpp"
 
-namespace AvbApi2014
-{
+#include "AvbApi_AEMDescriptorTypes.hpp"
 
-class EntityModel : public std::enable_shared_from_this<EntityModel>
-{
-  public:
-    EntityModel( shared_ptr<Factory> &factory, EntityModelId entityModelId );
-
-    virtual ~EntityModel() {}
-
-    shared_ptr<Factory> m_factory;
-    EntityModelId m_entityModelId;
-    uint16_t m_numConfigurations;
-    map<DescriptorIdentifier, shared_ptr<AEMDescriptorStorage> > m_descriptors;
-};
-}
+const char *avbapi_aemdescriptortypes_file = __FILE__;
