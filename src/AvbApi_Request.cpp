@@ -26,4 +26,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "AvbApi_world.hpp"
 
+#include "AvbApi_Request.hpp"
 
+const char *avbapi_request_file = __FILE__;

@@ -26,5 +26,49 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <memory>
+#include <vector>
+#include <functional>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <atomic>
+#include <cstdint>
+#include <utility>
+#include <tuple>
+#include <sys/socket.h>
 
+namespace AvbApi2014
+{
+using std::pair;
+using std::make_pair;
+using std::tuple;
+using std::make_tuple;
+using std::shared_ptr;
+using std::weak_ptr;
+using std::unique_ptr;
+using std::make_shared;
+using std::function;
+using std::vector;
+using std::array;
 
+typedef std::uint64_t EntityId;
+typedef std::uint64_t EntityModelId;
+typedef std::uint64_t StreamId;
+typedef std::uint64_t MACAddress;
+typedef std::uint16_t CommandCode;
+typedef std::uint16_t ConfigurationIndexType;
+typedef std::uint16_t DescriptorType;
+typedef std::uint16_t DescriptorIndexType;
+typedef std::vector<uint8_t> DescriptorStorage;
+typedef std::tuple<ConfigurationIndexType, DescriptorType, DescriptorIndexType> DescriptorIdentifier;
+
+struct NetworkAddress
+{
+    bool m_isMac;
+    MACAddress m_macAddress;
+    sockaddr_storage m_sockaddr;
+};
+}
+
+namespace AvbApi = AvbApi2014;

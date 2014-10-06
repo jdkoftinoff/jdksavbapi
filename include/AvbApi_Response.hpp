@@ -27,5 +27,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "AvbApi_world.hpp"
+#include "AvbApi_Factory.hpp"
+#include "AvbApi_Request.hpp"
 
-
+namespace AvbApi2014
+{
+class ACMPResponse;
+class ACMPUnsolicitedResponse;
+class ADPResponse;
+class AECPAAResponse;
+class AECPAEMResponse;
+class AECPAEMUnsolicitedResponse;
+}

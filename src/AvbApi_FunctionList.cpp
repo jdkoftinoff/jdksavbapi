@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 Copyright (c) 2014, Jeff Koftinoff
 All rights reserved.
@@ -27,12 +25,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "AvbApi_world.hpp"
-#include "AvbApi_Factory.hpp"
+#include "AvbApi_FunctionList.hpp"
 
-namespace AvbApi2014
-{
-
-class PcapFactory : public Factory
-{
-};
-}
+std::atomic_uint_least64_t AvbApi2014::FunctionListCounter::nextFunctionId;

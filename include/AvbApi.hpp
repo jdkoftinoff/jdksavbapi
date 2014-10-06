@@ -28,4 +28,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "AvbApi_world.hpp"
 
-
+#include "AvbApi_FunctionList.hpp"
+#include "AvbApi_Factory.hpp"
+#include "AvbApi_Network.hpp"
+#include "AvbApi_Request.hpp"
+#include "AvbApi_Response.hpp"

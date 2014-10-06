@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 Copyright (c) 2014, Jeff Koftinoff
 All rights reserved.
@@ -27,12 +25,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "AvbApi_world.hpp"
-#include "AvbApi_Factory.hpp"
 
-namespace AvbApi2014
-{
+#include "AvbApi_Enumerator.hpp"
 
-class PcapFactory : public Factory
-{
-};
-}
+const char *avbapi_enumerator_file = __FILE__;

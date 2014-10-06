@@ -27,5 +27,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "AvbApi_world.hpp"
+#include "AvbApi_Factory.hpp"
+#include "AvbApi_FunctionList.hpp"
 
+namespace AvbApi2014
+{
 
+class Network : public std::enable_shared_from_this<Network>
+{
+  public:
+    virtual void doADPRequest( shared_ptr<ADPRequest>, std::function<void()> ) = 0;
+
+    virtual void doAECPAARequest( shared_ptr<AECPAARequest>, std::function<void(shared_ptr<AECPAAResponse> const &)> ) = 0;
+
+    virtual void doAECPAEMRequest( shared_ptr<AECPAEMRequest>, std::function<void(shared_ptr<AECPAEMResponse> const &)> ) = 0;
+
+    FunctionList<void(NetworkAddress const &, bool)> m_LinkStatusChangedEvent;
+    FunctionList<void(shared_ptr<ADPResponse> const &)> m_ADPResponseEvent;
+    FunctionList<void(shared_ptr<ACMPUnsolicitedResponse> const &)> m_ACMPUnsolicitedResponseEvent;
+    FunctionList<void(shared_ptr<AECPAEMUnsolicitedResponse> const &)> m_AECPAEMUnsolicitedResponseEvent;
+};
+}

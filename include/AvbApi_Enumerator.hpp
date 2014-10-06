@@ -28,11 +28,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "AvbApi_world.hpp"
 #include "AvbApi_Factory.hpp"
+#include "AvbApi_Request.hpp"
+#include "AvbApi_Response.hpp"
 
 namespace AvbApi2014
 {
 
-class PcapFactory : public Factory
+class Enumerator : public std::enable_shared_from_this<Enumerator>
 {
+  public:
+    Enumerator( Factory &factory, EntityId targetEntityId, function<void(EntityId, shared_ptr<EntityModel> &)> callback )
+        : m_factory( factory ), m_targetEntityId( targetEntityId ), m_callback( callback )
+    {
+    }
+
+  protected:
+    Factory &m_factory;
+    EntityId m_targetEntityId;
+    function<void(EntityId, shared_ptr<EntityModel> &)> m_callback;
 };
 }

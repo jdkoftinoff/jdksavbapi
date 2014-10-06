@@ -27,5 +27,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "AvbApi_world.hpp"
+#include "AvbApi_Factory.hpp"
 
+namespace AvbApi2014
+{
 
+class LinuxFactory : public Factory
+{
+  public:
+    virtual ~LinuxFactory() {}
+};
+}

@@ -28,11 +28,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "AvbApi_world.hpp"
 #include "AvbApi_Factory.hpp"
+#include "AvbApi_FunctionList.hpp"
+#include "AvbApi_EntityModel.hpp"
 
 namespace AvbApi2014
 {
 
-class PcapFactory : public Factory
+class Entity : public std::enable_shared_from_this<Entity>
 {
+  public:
+    Entity( Factory &factory, EntityId entityId, EntityModelId entityModelId, shared_ptr<EntityModel> &entityModel );
+    virtual ~Entity() {}
 };
 }
