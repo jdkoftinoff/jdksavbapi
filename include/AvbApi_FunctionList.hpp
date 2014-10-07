@@ -30,16 +30,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AvbApi2014
 {
-typedef uint64_t FunctionId;
+typedef uint32_t FunctionId;
 
-class FunctionListCounter
+class FunctionListBase
 {
-  protected:
-    static std::atomic_uint_least64_t nextFunctionId;
+public:
+    FunctionId nextId()
+    {
+        return m_nextFunctionId++;
+    }
+
+    virtual void remove( FunctionId fid ) = 0;
+
+private:
+    std::atomic<FunctionId> m_nextFunctionId;
 };
 
 template <typename F>
-class FunctionList : private FunctionListCounter
+class FunctionList : public FunctionListBase
 {
   public:
     using function_type = std::function<F>;
@@ -56,12 +64,12 @@ class FunctionList : private FunctionListCounter
 
     FunctionId add( function_type f )
     {
-        FunctionId fid = nextFunctionId++;
+        FunctionId fid = nextId();
         m_functions.emplace_back( make_pair( fid, f ) );
         return fid;
     }
 
-    void remove( FunctionId fid )
+    virtual void remove( FunctionId fid )
     {
         m_functions.erase( std::remove_if( m_functions.begin(),
                                            m_functions.end(),
@@ -73,37 +81,33 @@ class FunctionList : private FunctionListCounter
     }
 
     std::vector<item_type> m_functions;
-};
 
-class ScopedRegisterFunction
-{
-    struct ScopedRegisterFunctionHelper
-    {
-        FunctionId m_fid;
-    };
 
-    template <typename FunctionListT>
-    struct ScopedRegisterFunctionHelperSpecial : ScopedRegisterFunctionHelper
+    class Registrar
     {
-        ScopedRegisterFunctionHelperSpecial( FunctionId fid, FunctionListT &functionList )
-            : ScopedRegisterFunctionHelper{fid}, m_functionList{functionList}
+      public:
+        Registrar( FunctionList &functionList, function_type func )
+            : m_functionList(functionList)
+            , m_fid( m_functionList.add( func ) )
         {
         }
 
-        ~ScopedRegisterFunctionHelperSpecial() { m_functionList.remove( m_fid ); }
+        ~Registrar()
+        {
+            m_functionList.remove(m_fid);
+        }
 
-        FunctionListT m_functionList;
+        FunctionList &m_functionList;
+        FunctionId m_fid;
     };
 
-  public:
-    template <typename FunctionListT>
-    ScopedRegisterFunction( FunctionListT &functionList, typename FunctionListT::function_type func )
-        : m_helper( new ScopedRegisterFunctionHelperSpecial<FunctionListT>( functionList.add( func ), functionList ) )
-    {
-    }
-
-    ~ScopedRegisterFunction() {}
-
-    unique_ptr<ScopedRegisterFunctionHelper> m_helper;
 };
+
+template <typename FunctionListT>
+auto registerFunction( FunctionListT &functionList, typename FunctionListT::function_type func ) -> typename FunctionListT::Registrar
+{
+    return typename FunctionListT::Registrar(functionList,func);
+}
+
+
 }

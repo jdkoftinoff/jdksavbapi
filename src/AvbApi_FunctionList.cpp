@@ -27,4 +27,5 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "AvbApi_world.hpp"
 #include "AvbApi_FunctionList.hpp"
 
-std::atomic_uint_least64_t AvbApi2014::FunctionListCounter::nextFunctionId;
+const char *avbapi_functionlist_file = __FILE__;
+
