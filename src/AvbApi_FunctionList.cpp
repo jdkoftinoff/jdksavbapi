@@ -28,4 +28,3 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "AvbApi_FunctionList.hpp"
 
 const char *avbapi_functionlist_file = __FILE__;
-

@@ -34,15 +34,12 @@ typedef uint32_t FunctionId;
 
 class FunctionListBase
 {
-public:
-    FunctionId nextId()
-    {
-        return m_nextFunctionId++;
-    }
+  public:
+    FunctionId nextId() { return m_nextFunctionId++; }
 
     virtual void remove( FunctionId fid ) = 0;
 
-private:
+  private:
     std::atomic<FunctionId> m_nextFunctionId;
 };
 
@@ -82,32 +79,25 @@ class FunctionList : public FunctionListBase
 
     std::vector<item_type> m_functions;
 
-
     class Registrar
     {
       public:
         Registrar( FunctionList &functionList, function_type func )
-            : m_functionList(functionList)
-            , m_fid( m_functionList.add( func ) )
+            : m_functionList( functionList ), m_fid( m_functionList.add( func ) )
         {
         }
 
-        ~Registrar()
-        {
-            m_functionList.remove(m_fid);
-        }
+        ~Registrar() { m_functionList.remove( m_fid ); }
 
         FunctionList &m_functionList;
         FunctionId m_fid;
     };
-
 };
 
 template <typename FunctionListT>
-auto registerFunction( FunctionListT &functionList, typename FunctionListT::function_type func ) -> typename FunctionListT::Registrar
+auto registerFunction( FunctionListT &functionList, typename FunctionListT::function_type func )
+    -> typename FunctionListT::Registrar
 {
-    return typename FunctionListT::Registrar(functionList,func);
+    return typename FunctionListT::Registrar( functionList, func );
 }
-
-
 }
